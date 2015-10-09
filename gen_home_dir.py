@@ -1,4 +1,5 @@
 from os import mkdir
+from shutil import copytree
 from os.path import join
 from uuid import uuid4
 
@@ -9,13 +10,15 @@ from tornado.ioloop import IOLoop
 
 app = Flask(__name__)
 
-BASE = '/seccom2015/user_homes'
+BASE = '/seccom2015'
+DEFAULT = join(BASE, 'base_home')
+HOMES = join(BASE, 'user_homes')
 
 
 @app.route('/get_home_dir', methods=['GET'])
 def get_dir_name():
-    dir_name = join(BASE, str(uuid4()))
-    mkdir(dir_name)
+    dir_name = join(HOMES, str(uuid4()))
+    copytree(DEFAULT, dir_name)
     return dir_name
 
 
